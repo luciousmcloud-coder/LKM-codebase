@@ -1,0 +1,29 @@
+name: Build LKM Codebase Desktop
+
+on:
+  workflow_dispatch:
+    push:
+        branches:
+              - main
+                pull_request:
+
+                jobs:
+                  build:
+                      name: ${{ matrix.target.name }}
+                          runs-on: ${{ matrix.target.os }}
+                              strategy:
+                                    fail-fast: false
+                                          matrix:
+                                                  target:
+                                                            - name: Windows Installer
+                                                                        os: windows-2022
+                                                                                    build_command: pnpm desktop:dist:win
+                                                                                                artifact_glob: release/*.exe
+                                                                                                          - name: macOS DMG
+                                                                                                                      os: macos-13
+                                                                                                                                  build_command: pnpm desktop:dist:mac
+                                                                                                                                              artifact_glob: release/*.dmg
+                                                                                                                                                        - name: Linux AppImage
+                                                                                                                                                                    os: ubuntu-22.04
+                                                                                                                                                                                build_command: pnpm desktop:dist:linux
+                                                                                                                                                                                            artifact_glob: release/*.AppImag
